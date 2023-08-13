@@ -28,7 +28,7 @@ public class Server {
             while(!serverSocket.isClosed()) {
                 Socket socket = serverSocket.accept();
                 ConnectionHandler connection = new ConnectionHandler(socket);
-                connection.run();
+                new Thread(connection).start();
             }
         } catch (IOException e) {
             e.printStackTrace();
