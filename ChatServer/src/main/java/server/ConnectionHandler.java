@@ -32,8 +32,7 @@ public class ConnectionHandler implements Runnable{
             writer.println("Please enter a nickname: ");
             clientUsername = reader.readLine();
 
-            System.out.println(clientUsername + " is been connected");
-            writer.println(clientUsername + " joined to chatroom");
+            broadcastMessage("SERVER: " + clientUsername + " joined to chatroom");
 
             String message;
 
@@ -41,8 +40,8 @@ public class ConnectionHandler implements Runnable{
                 message = reader.readLine();
 
                 if(message.startsWith("/quit")) {
-                    removeConnectionHandler();
                     shutdown();
+                    break;
                 }
                 else {
                     broadcastMessage(clientUsername + ": " + message);
@@ -61,7 +60,7 @@ public class ConnectionHandler implements Runnable{
     private void broadcastMessage(String message) {
         for (ConnectionHandler connection : connections) {
             if(!connection.clientUsername.equals(clientUsername)) {
-                writer.println(message);
+                connection.writer.println(message);
             }
         }
     }
